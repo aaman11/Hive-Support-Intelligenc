@@ -22,6 +22,7 @@ Features
 📊 Support Intelligence — Extract recurring issues and customer pain points.
 🛡️ Grounded Responses — Reduce unsupported LLM responses through retrieval.
 Architecture
+```text
 Customer Support Conversation
             │
             ▼
