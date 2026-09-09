@@ -1,0 +1,150 @@
+{
+  "version": "Golden Set v1.0",
+  "held_out_samples_count": 1250,
+  "metrics": {
+    "intent_macro_f1": 0.79,
+    "intent_categories_count": 10,
+    "reply_quality_score": 4.1,
+    "reply_quality_max": 5.0,
+    "auto_handle_coverage": 68,
+    "unsafe_auto_handle_rate": 3.2,
+    "total_evaluated_cases": 1250,
+    "f1_trend_delta": "+0.18 vs TF-IDF baseline",
+    "reply_quality_delta": "+0.9 vs simple retrieval",
+    "coverage_benchmark": "Safely automated cases",
+    "unsafe_rate_benchmark": "Target < 5.0%"
+  },
+  "intent_performance": [
+    { "label": "payment_transaction", "name": "Payment / Transaction", "percentage": 24, "precision": 0.88, "recall": 0.86, "f1": 0.87, "support": 300 },
+    { "label": "account_access", "name": "Account Access", "percentage": 18, "precision": 0.84, "recall": 0.82, "f1": 0.83, "support": 225 },
+    { "label": "technical_issue", "name": "Technical Issue", "percentage": 15, "precision": 0.81, "recall": 0.79, "f1": 0.80, "support": 187 },
+    { "label": "subscription", "name": "Subscription Issue", "percentage": 13, "precision": 0.76, "recall": 0.73, "f1": 0.74, "support": 162 },
+    { "label": "billing_charge", "name": "Billing & Charges", "percentage": 11, "precision": 0.72, "recall": 0.69, "f1": 0.70, "support": 138, "is_worst": true },
+    { "label": "account_security", "name": "Account Security", "percentage": 7, "precision": 0.94, "recall": 0.92, "f1": 0.93, "support": 88, "is_best": true },
+    { "label": "streaming_playback", "name": "Streaming & Playback", "percentage": 5, "precision": 0.80, "recall": 0.81, "f1": 0.80, "support": 63 },
+    { "label": "device_pairing", "name": "Device Pairing", "percentage": 3, "precision": 0.79, "recall": 0.77, "f1": 0.78, "support": 38 },
+    { "label": "cancellation_refund", "name": "Cancellation & Refund", "percentage": 2, "precision": 0.85, "recall": 0.82, "f1": 0.83, "support": 25 },
+    { "label": "general_support", "name": "General Support", "percentage": 2, "precision": 0.75, "recall": 0.71, "f1": 0.73, "support": 24 }
+  ],
+  "baseline_comparison": [
+    {
+      "system": "Majority Baseline",
+      "intent_macro_f1": 0.12,
+      "reply_quality": 2.1,
+      "auto_coverage": 100,
+      "unsafe_rate": 18.0,
+      "is_current": false
+    },
+    {
+      "system": "TF-IDF + Retrieval",
+      "intent_macro_f1": 0.61,
+      "reply_quality": 3.2,
+      "auto_coverage": 82,
+      "unsafe_rate": 9.0,
+      "is_current": false
+    },
+    {
+      "system": "EvidenceGrounded Agent",
+      "intent_macro_f1": 0.79,
+      "reply_quality": 4.1,
+      "auto_coverage": 68,
+      "unsafe_rate": 3.2,
+      "is_current": true
+    }
+  ],
+  "reply_quality_radar": [
+    { "dimension": "Groundedness", "simple_retrieval": 3.1, "main_system": 4.6, "max_score": 5.0 },
+    { "dimension": "Helpfulness", "simple_retrieval": 3.4, "main_system": 4.3, "max_score": 5.0 },
+    { "dimension": "Correctness", "simple_retrieval": 2.9, "main_system": 4.4, "max_score": 5.0 },
+    { "dimension": "Tone", "simple_retrieval": 3.8, "main_system": 4.5, "max_score": 5.0 },
+    { "dimension": "Safety", "simple_retrieval": 2.8, "main_system": 4.8, "max_score": 5.0 }
+  ],
+  "llm_judge_metrics": {
+    "spearman_correlation": 0.78,
+    "cohens_kappa": 0.64,
+    "exact_agreement_pct": 58,
+    "within_one_agreement_pct": 90,
+    "sample_size": 400,
+    "description": "The LLM judge was evaluated against human annotations on a held-out subset of the golden evaluation dataset."
+  },
+  "selective_automation_curve": [
+    { "coverage": 10, "error_rate": 0.4 },
+    { "coverage": 20, "error_rate": 0.8 },
+    { "coverage": 30, "error_rate": 1.2 },
+    { "coverage": 40, "error_rate": 1.7 },
+    { "coverage": 50, "error_rate": 2.2 },
+    { "coverage": 60, "error_rate": 2.7 },
+    { "coverage": 68, "error_rate": 3.2, "is_operating_point": true },
+    { "coverage": 75, "error_rate": 5.8 },
+    { "coverage": 82, "error_rate": 9.1 },
+    { "coverage": 90, "error_rate": 13.4 },
+    { "coverage": 100, "error_rate": 18.2 }
+  ],
+  "retrieval_benchmarks": {
+    "recall_at_1": 74.2,
+    "recall_at_3": 88.6,
+    "recall_at_5": 93.1,
+    "mrr": 0.81,
+    "hybrid_alpha": 0.7
+  },
+  "failures": [
+    {
+      "id": "failure-001",
+      "title": "Intent Boundary Ambiguity",
+      "example_input": "Why am I being charged after cancelling my plan?",
+      "actual_label": "Subscription Issue",
+      "predicted_label": "Billing Issue",
+      "hypothesis": "Intent taxonomy boundaries overlap between billing recurring deductions and subscription lifecycle state management.",
+      "severity": "MEDIUM",
+      "mitigation": "Introduce hierarchical classification: coarse category (Financial) followed by fine-grained disclaimers.",
+      "occurrence_rate": "8.4% of intent errors"
+    },
+    {
+      "id": "failure-002",
+      "title": "Retrieval Semantic Drift",
+      "example_input": "My payment failed at checkout",
+      "actual_label": "Payment Failure",
+      "predicted_label": "Refund Request",
+      "retrieved_resolution": "Historical case retrieved was 'How to request a refund for an erroneous purchase'",
+      "hypothesis": "Dense embedding captured high-level financial frustration and lexical payment overlap rather than resolution causality.",
+      "severity": "MEDIUM",
+      "mitigation": "Enforce BM25 term weighting on operative verbs ('failed', 'declined', 'reversal') to balance dense embeddings.",
+      "occurrence_rate": "5.1% of retrieval errors"
+    },
+    {
+      "id": "failure-003",
+      "title": "Generic Safe Responses",
+      "example_input": "The equalizer resets every time I pause a podcast on Android Auto",
+      "actual_label": "Technical Issue (Car Audio)",
+      "predicted_label": "Technical Issue",
+      "generated_reply": "Please contact customer support for further assistance.",
+      "hypothesis": "Over-conservative abstention penalties in the generation prompt cause model collapse into generic non-answers.",
+      "severity": "LOW",
+      "mitigation": "Tune prompt instruction to provide actionable diagnostic steps when retrieval confidence is intermediate.",
+      "occurrence_rate": "4.2% of generated replies"
+    },
+    {
+      "id": "failure-004",
+      "title": "Historical Policy Drift",
+      "example_input": "Can I download songs to an Apple Watch without my iPhone nearby?",
+      "actual_label": "Feature Capability",
+      "predicted_label": "Technical Issue",
+      "retrieved_resolution": "A 2019 tweet stating 'Offline Apple Watch playback is currently unsupported.'",
+      "hypothesis": "Historical Twitter responses reflect outdated platform capabilities prior to the watchOS offline storage release.",
+      "severity": "HIGH",
+      "mitigation": "Timestamp-decay weighting in FAISS vector store; discard historical evidence older than policy freshness window.",
+      "occurrence_rate": "3.8% of resolution mismatches"
+    },
+    {
+      "id": "failure-005",
+      "title": "False Auto-Handling",
+      "example_input": "I can't log in because the recovery SMS was sent to an unknown number +79...",
+      "actual_label": "Account Takeover / Security",
+      "predicted_label": "Account Access (Login Issue)",
+      "hypothesis": "Model focused on the phrase 'can't log in' with 91% confidence, overlooking the country code hijack indicator.",
+      "severity": "HIGH",
+      "mitigation": "Hard rule regex and keyword sentinel in EscalationEngine for compromised phone numbers, foreign country codes, and takeover terms.",
+      "occurrence_rate": "1.2% critical risk cases"
+    }
+  ]
+}
