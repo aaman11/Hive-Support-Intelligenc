@@ -62,7 +62,7 @@ Customer Support Conversation
        Support Intelligence
             Interface
 RAG Workflow
-```text
+
 Customer Query
       │
       ▼
