@@ -61,21 +61,32 @@ Customer Support Conversation
        Support Intelligence
             Interface
 RAG Workflow
-User Query
-    ↓
+```text
+Customer Query
+      │
+      ▼
 Query Understanding
-    ↓
+      │
+      ▼
 Query Rewriting
-    ↓
+      │
+      ▼
 Semantic Retrieval
-    ↓
+      │
+      ▼
 Reranking
-    ↓
+      │
+      ▼
 Context Compression
-    ↓
-LLM / Agent Reasoning
-    ↓
+      │
+      ▼
+LLM / Agent
+      │
+      ▼
 Grounded Response
+      │
+      ▼
+Evaluation
 Technology Stack
 Category	Technologies
 Language	Python
